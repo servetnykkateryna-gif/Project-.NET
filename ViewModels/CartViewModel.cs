@@ -56,6 +56,37 @@ public partial class CartViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private async Task IncreaseQuantityAsync(CartItemDto item)
+    {
+        if (item == null) return;
+
+        item.Quantity++;
+        await _cartService.UpdateQuantityAsync(item.Product.Id, item.Quantity);
+        UpdateTotals();
+    }
+
+    [RelayCommand]
+    private async Task DecreaseQuantityAsync(CartItemDto item)
+    {
+        if (item == null) return;
+
+        if (item.Quantity > 1)
+        {
+            item.Quantity--;
+            await _cartService.UpdateQuantityAsync(item.Product.Id, item.Quantity);
+            UpdateTotals();
+        }
+        else
+        {
+            bool answer = await Shell.Current.DisplayAlert("Видалення", $"Видалити «{item.Product.Name}» з кошика?", "Так", "Ні");
+            if (answer)
+            {
+                await RemoveFromCartAsync(item);
+            }
+        }
+    }
+
+    [RelayCommand]
     private async Task RemoveFromCartAsync(CartItemDto item)
     {
         if (item == null) return;

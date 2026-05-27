@@ -52,6 +52,11 @@ public class CartService : ICartService
         await _database.ClearCartAsync();
     }
 
+    public async Task UpdateQuantityAsync(int productId, int quantity)
+    {
+        await _database.UpdateCartItemQuantityAsync(productId, quantity);
+    }
+
     public async Task<decimal> GetCartTotalAsync()
     {
         var items = await GetCartItemsAsync();

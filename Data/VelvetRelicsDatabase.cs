@@ -184,4 +184,25 @@ public class VelvetRelicsDatabase
         var db = await GetDatabaseAsync();
         await db.DeleteAllAsync<CartItem>();
     }
+
+    /// <summary>
+    /// Оновити кількість товару в кошику (або видалити, якщо кількість <= 0)
+    /// </summary>
+    public async Task UpdateCartItemQuantityAsync(int productId, int quantity)
+    {
+        var db = await GetDatabaseAsync();
+        var existing = await db.Table<CartItem>().Where(c => c.ProductId == productId).FirstOrDefaultAsync();
+        if (existing is not null)
+        {
+            if (quantity <= 0)
+            {
+                await db.DeleteAsync(existing);
+            }
+            else
+            {
+                existing.Quantity = quantity;
+                await db.UpdateAsync(existing);
+            }
+        }
+    }
 }
