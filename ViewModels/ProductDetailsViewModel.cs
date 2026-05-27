@@ -1,0 +1,107 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using VelvetRelics.Models;
+using VelvetRelics.Services;
+
+namespace VelvetRelics.ViewModels;
+
+/// <summary>
+/// ViewModel для екрану детальної інформації про антикварний виріб.
+/// Приймає параметр ProductId через Shell-навігацію та підвантажує відповідний товар.
+/// </summary>
+[QueryProperty(nameof(ProductId), "ProductId")]
+public partial class ProductDetailsViewModel : BaseViewModel
+{
+    private readonly IProductService _productService;
+
+    [ObservableProperty]
+    private Product? product;
+
+    private int _productId;
+
+    /// <summary>
+    /// Властивість ProductId автоматично викликає підвантаження деталей товару при її зміні навігатором Shell.
+    /// </summary>
+    public int ProductId
+    {
+        get => _productId;
+        set
+        {
+            SetProperty(ref _productId, value);
+            LoadProductDetailsAsync(value);
+        }
+    }
+
+    public ProductDetailsViewModel(IProductService productService)
+    {
+        _productService = productService;
+        Title = "Деталі шедевра";
+    }
+
+    /// <summary>
+    /// Метод завантаження інформації про товар за його ID
+    /// </summary>
+    private async void LoadProductDetailsAsync(int id)
+    {
+        if (IsBusy)
+            return;
+
+        try
+        {
+            IsBusy = true;
+            var loadedProduct = await _productService.GetProductByIdAsync(id);
+            if (loadedProduct is not null)
+            {
+                Product = loadedProduct;
+                Title = Product.Name;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Помилка", "Товар не знайдено в каталозі.", "OK");
+                await GoBackAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Помилка", $"Не вдалося завантажити деталі: {ex.Message}", "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    /// <summary>
+    /// Навігація назад
+    /// </summary>
+    [RelayCommand]
+    private async Task GoBackAsync()
+    {
+        await Shell.Current.GoToAsync("..");
+    }
+
+    /// <summary>
+    /// Тимчасова команда для додавання в обране (буде повністю розписана на Етапі 9)
+    /// </summary>
+    [RelayCommand]
+    private async Task ToggleFavoriteAsync()
+    {
+        if (Product is null)
+            return;
+
+        // Поки що просто показуємо повідомлення
+        await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» додано до вашої приватної галереї обраного.", "Чудово");
+    }
+
+    /// <summary>
+    /// Тимчасова команда для додавання в кошик (буде повністю розписана на Етапі 10)
+    /// </summary>
+    [RelayCommand]
+    private async Task AddToCartAsync()
+    {
+        if (Product is null)
+            return;
+
+        await Shell.Current.DisplayAlert("Кошик", $"«{Product.Name}» успішно додано до вашого кошика замовлень.", "OK");
+    }
+}
