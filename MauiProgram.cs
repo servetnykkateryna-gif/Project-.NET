@@ -32,6 +32,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<SessionService>();
 		builder.Services.AddSingleton<IProductService, ProductService>();
 		builder.Services.AddSingleton<IFavoritesService, FavoritesService>();
+		builder.Services.AddSingleton<ICartService, CartService>();
 
 		// ─── ViewModels ─────────────────────────────────────────────────────────
 		// Transient — новий екземпляр кожного разу, коли потрібен
@@ -40,6 +41,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<CatalogViewModel>();
 		builder.Services.AddTransient<ProductDetailsViewModel>();
 		builder.Services.AddTransient<FavoritesViewModel>();
+		builder.Services.AddTransient<CartViewModel>();
 
 		// ─── Views ──────────────────────────────────────────────────────────────
 		builder.Services.AddTransient<LoginPage>();
@@ -47,6 +49,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<CatalogPage>();
 		builder.Services.AddTransient<ProductDetailsPage>();
 		builder.Services.AddTransient<FavoritesPage>();
+		builder.Services.AddTransient<CartPage>();
 
 		return builder.Build();
 	}

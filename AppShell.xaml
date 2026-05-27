@@ -20,6 +20,9 @@
         <Tab Title="Обране" Icon="{FontImage FontFamily=OpenSansRegular, Glyph='❤', Size=24, Color={StaticResource Primary}}">
             <ShellContent ContentTemplate="{DataTemplate views:FavoritesPage}" />
         </Tab>
+        <Tab Title="Кошик" Icon="{FontImage FontFamily=OpenSansRegular, Glyph='🛍', Size=24, Color={StaticResource Primary}}">
+            <ShellContent ContentTemplate="{DataTemplate views:CartPage}" />
+        </Tab>
     </TabBar>
 
 </Shell>

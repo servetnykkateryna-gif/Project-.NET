@@ -14,6 +14,7 @@ public partial class ProductDetailsViewModel : BaseViewModel
 {
     private readonly IProductService _productService;
     private readonly IFavoritesService _favoritesService;
+    private readonly ICartService _cartService;
 
     [ObservableProperty]
     private Product? product;
@@ -36,10 +37,11 @@ public partial class ProductDetailsViewModel : BaseViewModel
         }
     }
 
-    public ProductDetailsViewModel(IProductService productService, IFavoritesService favoritesService)
+    public ProductDetailsViewModel(IProductService productService, IFavoritesService favoritesService, ICartService cartService)
     {
         _productService = productService;
         _favoritesService = favoritesService;
+        _cartService = cartService;
         Title = "Деталі шедевра";
     }
 
@@ -101,18 +103,16 @@ public partial class ProductDetailsViewModel : BaseViewModel
         {
             await _favoritesService.RemoveFromFavoritesAsync(Product.Id);
             IsFavorite = false;
-            // await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» видалено з вашої приватної галереї.", "OK");
         }
         else
         {
             await _favoritesService.AddToFavoritesAsync(Product.Id);
             IsFavorite = true;
-            // await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» додано до вашої приватної галереї обраного.", "Чудово");
         }
     }
 
     /// <summary>
-    /// Тимчасова команда для додавання в кошик (буде повністю розписана на Етапі 10)
+    /// Команда для додавання в кошик
     /// </summary>
     [RelayCommand]
     private async Task AddToCartAsync()
@@ -120,6 +120,7 @@ public partial class ProductDetailsViewModel : BaseViewModel
         if (Product is null)
             return;
 
+        await _cartService.AddToCartAsync(Product.Id, 1);
         await Shell.Current.DisplayAlert("Кошик", $"«{Product.Name}» успішно додано до вашого кошика замовлень.", "OK");
     }
 }

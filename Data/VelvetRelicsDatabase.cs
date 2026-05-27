@@ -21,8 +21,8 @@ public class VelvetRelicsDatabase
     private static readonly Type[] Tables =
     {
         typeof(UserSession),
-        typeof(FavoriteItem)
-        // У наступних етапах тут додамо CartItem
+        typeof(FavoriteItem),
+        typeof(CartItem)
     };
 
     /// <summary>
@@ -131,5 +131,57 @@ public class VelvetRelicsDatabase
         var db = await GetDatabaseAsync();
         var existing = await db.Table<FavoriteItem>().Where(f => f.ProductId == productId).FirstOrDefaultAsync();
         return existing is not null;
+    }
+
+    // ─── CartItem Methods ────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Отримати всі товари в кошику
+    /// </summary>
+    public async Task<List<CartItem>> GetCartItemsAsync()
+    {
+        var db = await GetDatabaseAsync();
+        return await db.Table<CartItem>().ToListAsync();
+    }
+
+    /// <summary>
+    /// Додати товар у кошик (або збільшити кількість)
+    /// </summary>
+    public async Task AddToCartAsync(int productId, int quantity = 1)
+    {
+        var db = await GetDatabaseAsync();
+        
+        var existing = await db.Table<CartItem>().Where(c => c.ProductId == productId).FirstOrDefaultAsync();
+        if (existing is not null)
+        {
+            existing.Quantity += quantity;
+            await db.UpdateAsync(existing);
+        }
+        else
+        {
+            await db.InsertAsync(new CartItem { ProductId = productId, Quantity = quantity });
+        }
+    }
+
+    /// <summary>
+    /// Видалити товар з кошика
+    /// </summary>
+    public async Task RemoveFromCartAsync(int productId)
+    {
+        var db = await GetDatabaseAsync();
+        var existing = await db.Table<CartItem>().Where(c => c.ProductId == productId).FirstOrDefaultAsync();
+        if (existing is not null)
+        {
+            await db.DeleteAsync(existing);
+        }
+    }
+
+    /// <summary>
+    /// Очистити кошик повністю
+    /// </summary>
+    public async Task ClearCartAsync()
+    {
+        var db = await GetDatabaseAsync();
+        await db.DeleteAllAsync<CartItem>();
     }
 }
