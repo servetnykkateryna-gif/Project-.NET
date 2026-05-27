@@ -17,7 +17,7 @@ public partial class CatalogViewModel : BaseViewModel
     private ObservableCollection<Product> products = new();
 
     [ObservableProperty]
-    private ObservableCollection<string> categories = new();
+    private ObservableCollection<CategoryItemViewModel> categories = new();
 
     [ObservableProperty]
     private string selectedCategory = "Всі";
@@ -33,15 +33,15 @@ public partial class CatalogViewModel : BaseViewModel
         _productService = productService;
         Title = "Velvet Relics";
 
-        Categories = new ObservableCollection<string>
+        Categories = new ObservableCollection<CategoryItemViewModel>
         {
-            "Всі",
-            "Картини",
-            "Старовинні книги",
-            "Монети",
-            "Меблі",
-            "Прикраси",
-            "Годинники"
+            new() { Name = "Всі",             IsSelected = true  },
+            new() { Name = "Картини",          IsSelected = false },
+            new() { Name = "Старовинні книги", IsSelected = false },
+            new() { Name = "Монети",           IsSelected = false },
+            new() { Name = "Меблі",            IsSelected = false },
+            new() { Name = "Прикраси",         IsSelected = false },
+            new() { Name = "Годинники",        IsSelected = false },
         };
     }
 
@@ -76,15 +76,21 @@ public partial class CatalogViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Вибір категорії — фільтруємо локально без API
+    /// Вибір категорії — оновлює IsSelected для кожного елемента та фільтрує локально.
     /// </summary>
     [RelayCommand]
-    private void SelectCategory(string category)
+    private void SelectCategory(CategoryItemViewModel selected)
     {
-        if (SelectedCategory == category)
+        if (selected is null || SelectedCategory == selected.Name)
             return;
 
-        SelectedCategory = category;
+        // Скидаємо IsSelected для всіх категорій
+        foreach (var cat in Categories)
+            cat.IsSelected = false;
+
+        // Позначаємо обрану
+        selected.IsSelected = true;
+        SelectedCategory = selected.Name;
         ApplyFilters();
     }
 

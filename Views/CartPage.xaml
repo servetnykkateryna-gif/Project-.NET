@@ -24,102 +24,138 @@
                    HorizontalOptions="Center" />
         </VerticalStackLayout>
 
-        <!-- Список товарів у кошику -->
-        <RefreshView Grid.Row="1"
-                     IsRefreshing="{Binding IsBusy}"
-                     Command="{Binding LoadCartCommand}">
-            
-            <CollectionView ItemsSource="{Binding CartItems}"
-                            Margin="15,10">
+        <!-- Основна зона: список + overlay -->
+        <Grid Grid.Row="1" x:Name="CartContentGrid" Opacity="0" TranslationY="30">
+
+            <!-- Список товарів у кошику -->
+            <RefreshView IsRefreshing="{Binding IsBusy}"
+                         Command="{Binding LoadCartCommand}">
                 
-                <!-- Порожній стан -->
-                <CollectionView.EmptyView>
-                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="30" Spacing="15" IsVisible="{Binding IsEmpty}">
-                        <Label Text="🛒" FontSize="48" TextColor="{StaticResource Tertiary}" HorizontalOptions="Center" />
-                        <Label Text="Кошик порожній" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource White}" HorizontalOptions="Center"/>
-                        <Label Text="Перейдіть до каталогу та оберіть щось унікальне" FontSize="14" TextColor="{StaticResource Gray200}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                    </VerticalStackLayout>
-                </CollectionView.EmptyView>
+                <CollectionView ItemsSource="{Binding CartItems}"
+                                Margin="15,10">
+                    
+                    <!-- Порожній стан — прихований під час завантаження -->
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center"
+                                             Padding="30" Spacing="15"
+                                             IsVisible="{Binding IsNotBusy}">
+                            <Label Text="🛒" FontSize="56" TextColor="{StaticResource Tertiary}" HorizontalOptions="Center" />
+                            <Label Text="Кошик порожній"
+                                   FontSize="22" FontAttributes="Bold"
+                                   TextColor="{StaticResource White}"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Перейдіть до каталогу та оберіть щось унікальне"
+                                   FontSize="14" TextColor="{StaticResource Gray200}"
+                                   HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <!-- Кнопка переходу до каталогу -->
+                            <Button Text="До каталогу →"
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource Primary}"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Margin="0,10,0,0"
+                                    Command="{Binding GoToCatalogCommand}" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
 
-                <!-- Макет елемента -->
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="services:CartItemDto">
-                        <Border Stroke="{StaticResource Tertiary}"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 12"
-                                BackgroundColor="{StaticResource MidnightBlue}"
-                                Margin="0,5,0,10"
-                                Padding="10">
+                    <!-- Макет елемента -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="services:CartItemDto">
+                            <Border Stroke="{StaticResource Tertiary}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    BackgroundColor="{StaticResource MidnightBlue}"
+                                    Margin="0,5,0,10"
+                                    Padding="10">
 
-                            <Grid ColumnDefinitions="80, *, Auto" ColumnSpacing="15">
-                                
-                                <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0">
-                                    <Image Source="{Binding Product.ImageUrl}"
-                                           Aspect="AspectFill"
-                                           HeightRequest="80"
-                                           WidthRequest="80" />
-                                </Border>
+                                <Grid ColumnDefinitions="80, *, Auto" ColumnSpacing="15">
+                                    
+                                    <Border Grid.Column="0" StrokeShape="RoundRectangle 8" StrokeThickness="0">
+                                        <Image Source="{Binding Product.ImageUrl}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="80"
+                                               WidthRequest="80" />
+                                    </Border>
 
-                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                                    <Label Text="{Binding Product.Name}"
-                                           TextColor="{StaticResource White}"
-                                           FontSize="14"
-                                           FontAttributes="Bold"
-                                           MaxLines="2"
-                                           LineBreakMode="TailTruncation" />
-                                    <HorizontalStackLayout Spacing="10" Margin="0,5,0,0">
-                                        <Label Text="Кількість:" TextColor="{StaticResource Tertiary}" FontSize="12" VerticalOptions="Center" />
-                                        <Button Text="-"
-                                                WidthRequest="28"
-                                                HeightRequest="28"
-                                                CornerRadius="14"
-                                                Padding="0"
-                                                BackgroundColor="Transparent"
-                                                StrokeColor="{StaticResource Primary}"
-                                                StrokeThickness="1"
-                                                TextColor="{StaticResource Primary}"
-                                                FontSize="14"
-                                                FontAttributes="Bold"
-                                                VerticalOptions="Center"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=DecreaseQuantityCommand}"
-                                                CommandParameter="{Binding .}" />
-                                        <Label Text="{Binding Quantity}" TextColor="{StaticResource White}" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" />
-                                        <Button Text="+"
-                                                WidthRequest="28"
-                                                HeightRequest="28"
-                                                CornerRadius="14"
-                                                Padding="0"
-                                                BackgroundColor="Transparent"
-                                                StrokeColor="{StaticResource Primary}"
-                                                StrokeThickness="1"
-                                                TextColor="{StaticResource Primary}"
-                                                FontSize="14"
-                                                FontAttributes="Bold"
-                                                VerticalOptions="Center"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=IncreaseQuantityCommand}"
-                                                CommandParameter="{Binding .}" />
-                                    </HorizontalStackLayout>
-                                    <Label Text="{Binding TotalPrice, StringFormat='${0:N0}'}"
-                                           TextColor="{StaticResource Primary}"
-                                           FontSize="16"
-                                           FontAttributes="Bold"
-                                           Margin="0,5,0,0"/>
-                                </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                        <Label Text="{Binding Product.Name}"
+                                               TextColor="{StaticResource White}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
+                                        <HorizontalStackLayout Spacing="10" Margin="0,5,0,0">
+                                            <Label Text="Кількість:" TextColor="{StaticResource Tertiary}" FontSize="12" VerticalOptions="Center" />
+                                            <Button Text="-"
+                                                    WidthRequest="28"
+                                                    HeightRequest="28"
+                                                    CornerRadius="14"
+                                                    Padding="0"
+                                                    BackgroundColor="Transparent"
+                                                    BorderColor="{StaticResource Primary}"
+                                                    BorderWidth="1"
+                                                    TextColor="{StaticResource Primary}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    VerticalOptions="Center"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=DecreaseQuantityCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            <Label Text="{Binding Quantity}" TextColor="{StaticResource White}" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" WidthRequest="20" HorizontalTextAlignment="Center" />
+                                            <Button Text="+"
+                                                    WidthRequest="28"
+                                                    HeightRequest="28"
+                                                    CornerRadius="14"
+                                                    Padding="0"
+                                                    BackgroundColor="Transparent"
+                                                    BorderColor="{StaticResource Primary}"
+                                                    BorderWidth="1"
+                                                    TextColor="{StaticResource Primary}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    VerticalOptions="Center"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=IncreaseQuantityCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                        </HorizontalStackLayout>
+                                        <Label Text="{Binding TotalPrice, StringFormat='${0:N0}'}"
+                                               TextColor="{StaticResource Primary}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               Margin="0,5,0,0"/>
+                                    </VerticalStackLayout>
 
-                                <ImageButton Grid.Column="2"
-                                             Source="{FontImage FontFamily=OpenSansRegular, Glyph='✖', Size=16, Color={StaticResource Gray400}}"
-                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveFromCartCommand}"
-                                             CommandParameter="{Binding .}"
-                                             BackgroundColor="Transparent"
-                                             VerticalOptions="Center"
-                                             HeightRequest="40"
-                                             WidthRequest="40" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
+                                    <ImageButton Grid.Column="2"
+                                                 Source="{FontImage FontFamily=OpenSansRegular, Glyph='✖', Size=16, Color={StaticResource Gray400}}"
+                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveFromCartCommand}"
+                                                 CommandParameter="{Binding .}"
+                                                 BackgroundColor="Transparent"
+                                                 VerticalOptions="Center"
+                                                 HeightRequest="40"
+                                                 WidthRequest="40" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+            <!-- Loading Overlay -->
+            <Grid IsVisible="{Binding IsBusy}"
+                  BackgroundColor="{StaticResource OffBlack}"
+                  VerticalOptions="Fill"
+                  HorizontalOptions="Fill">
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       Color="{StaticResource Primary}"
+                                       HeightRequest="48"
+                                       WidthRequest="48" />
+                    <Label Text="Завантаження кошика..."
+                           TextColor="{StaticResource Tertiary}"
+                           FontSize="13"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+
+        </Grid>
 
         <!-- Підвал: Загальна сума та кнопка Оформлення -->
         <Border Grid.Row="2"

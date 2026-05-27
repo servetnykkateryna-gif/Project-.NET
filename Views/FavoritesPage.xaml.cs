@@ -16,7 +16,18 @@ public partial class FavoritesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        // Завжди оновлюємо список при переході на сторінку, щоб відобразити найсвіжіші зміни
-        await _viewModel.LoadFavoritesAsync();
+
+        // Скидаємо стан перед анімацією
+        FavoritesContentGrid.Opacity = 0;
+        FavoritesContentGrid.TranslationY = 30;
+
+        // Запускаємо завантаження та анімацію паралельно
+        await Task.WhenAll(
+            _viewModel.LoadFavoritesAsync(),
+            Task.WhenAll(
+                FavoritesContentGrid.FadeTo(1, 350, Easing.CubicOut),
+                FavoritesContentGrid.TranslateTo(0, 0, 350, Easing.CubicOut)
+            )
+        );
     }
 }

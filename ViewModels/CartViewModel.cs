@@ -116,4 +116,13 @@ public partial class CartViewModel : BaseViewModel
         IsEmpty = CartItems.Count == 0;
         IsNotEmpty = !IsEmpty;
     }
+
+    /// <summary>
+    /// Переходить на вкладку каталогу з порожнього стану кошика.
+    /// </summary>
+    [RelayCommand]
+    private async Task GoToCatalogAsync()
+    {
+        await Shell.Current.GoToAsync("///MainPage");
+    }
 }

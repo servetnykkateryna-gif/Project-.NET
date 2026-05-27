@@ -7,7 +7,7 @@
              BackgroundColor="{StaticResource OffBlack}"
              x:DataType="viewmodels:LoginViewModel">
 
-    <ScrollView>
+    <ScrollView x:Name="LoginFormView" Opacity="0" TranslationY="20">
         <VerticalStackLayout Spacing="20" Padding="30,50" VerticalOptions="Center">
             
             <!-- Логотип або заголовок -->

@@ -7,7 +7,7 @@
              BackgroundColor="{StaticResource OffBlack}"
              x:DataType="viewmodels:RegisterViewModel">
 
-    <ScrollView>
+    <ScrollView x:Name="RegisterFormView" Opacity="0" TranslationY="20">
         <VerticalStackLayout Spacing="20" Padding="30,50" VerticalOptions="Center">
             
             <Label Text="Velvet Relics"

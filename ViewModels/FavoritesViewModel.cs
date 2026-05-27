@@ -66,4 +66,13 @@ public partial class FavoritesViewModel : BaseViewModel
         if (product is null) return;
         await Shell.Current.GoToAsync($"ProductDetailsPage?ProductId={product.Id}");
     }
+
+    /// <summary>
+    /// Переходить на вкладку каталогу з порожнього стану обраного.
+    /// </summary>
+    [RelayCommand]
+    private async Task GoToCatalogAsync()
+    {
+        await Shell.Current.GoToAsync("///MainPage");
+    }
 }

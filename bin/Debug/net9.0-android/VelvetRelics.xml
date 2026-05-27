@@ -56,6 +56,33 @@
             Перевірити, чи товар в улюблених
             </summary>
         </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.GetCartItemsAsync">
+            <summary>
+            Отримати всі товари в кошику
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.AddToCartAsync(System.Int32,System.Int32)">
+            <summary>
+            Додати товар у кошик (або збільшити кількість)
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.RemoveFromCartAsync(System.Int32)">
+            <summary>
+            Видалити товар з кошика
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.ClearCartAsync">
+            <summary>
+            Очистити кошик повністю
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:VelvetRelics.Data.VelvetRelicsDatabase.UpdateCartItemQuantityAsync(System.Int32,System.Int32)" -->
+        <member name="T:VelvetRelics.Models.CartItem">
+            <summary>
+            Сутність, що репрезентує товар у кошику покупок.
+            Зберігається в локальній SQLite базі даних.
+            </summary>
+        </member>
         <member name="T:VelvetRelics.Models.FavoriteItem">
             <summary>
             Сутність, що репрезентує товар, який користувач додав до улюблених.
@@ -127,6 +154,12 @@
             <summary>
             Час, коли сесія була збережена
             </summary>
+        </member>
+        <member name="T:VelvetRelics.Services.CartItemDto">
+            <inheritdoc/>
+        </member>
+        <member name="P:VelvetRelics.Services.CartItemDto.Quantity">
+            <inheritdoc cref="F:VelvetRelics.Services.CartItemDto.quantity"/>
         </member>
         <member name="T:VelvetRelics.Services.IProductService">
             <summary>
@@ -200,6 +233,68 @@
         <member name="P:VelvetRelics.ViewModels.BaseViewModel.Title">
             <inheritdoc cref="F:VelvetRelics.ViewModels.BaseViewModel.title"/>
         </member>
+        <member name="T:VelvetRelics.ViewModels.CartViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="M:VelvetRelics.ViewModels.CartViewModel.GoToCatalogAsync">
+            <summary>
+            Переходить на вкладку каталогу з порожнього стану кошика.
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.CartItems">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CartViewModel.cartItems"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.TotalPrice">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CartViewModel.totalPrice"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.IsEmpty">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CartViewModel.isEmpty"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.IsNotEmpty">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CartViewModel.isNotEmpty"/>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.loadCartCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.LoadCartCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.LoadCartCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.LoadCartAsync"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.increaseQuantityCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.IncreaseQuantityCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.IncreaseQuantityCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.IncreaseQuantityAsync(VelvetRelics.Services.CartItemDto)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.decreaseQuantityCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.DecreaseQuantityCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.DecreaseQuantityCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.DecreaseQuantityAsync(VelvetRelics.Services.CartItemDto)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.removeFromCartCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.RemoveFromCartCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.RemoveFromCartCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.RemoveFromCartAsync(VelvetRelics.Services.CartItemDto)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.checkoutCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.CheckoutCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.CheckoutCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.CheckoutAsync"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CartViewModel.goToCatalogCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CartViewModel.GoToCatalogCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CartViewModel.GoToCatalogCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CartViewModel.GoToCatalogAsync"/>.</summary>
+        </member>
         <member name="T:VelvetRelics.ViewModels.CatalogViewModel">
             <inheritdoc/>
             <inheritdoc/>
@@ -214,9 +309,9 @@
             Завантажуємо товари з API та зберігаємо у локальний кеш
             </summary>
         </member>
-        <member name="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategory(System.String)">
+        <member name="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategory(VelvetRelics.ViewModels.CategoryItemViewModel)">
             <summary>
-            Вибір категорії — фільтруємо локально без API
+            Вибір категорії — оновлює IsSelected для кожного елемента та фільтрує локально.
             </summary>
         </member>
         <member name="M:VelvetRelics.ViewModels.CatalogViewModel.Search">
@@ -275,7 +370,7 @@
             <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryCommand"/>.</summary>
         </member>
         <member name="P:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryCommand">
-            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategory(System.String)"/>.</summary>
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategory(VelvetRelics.ViewModels.CategoryItemViewModel)"/>.</summary>
         </member>
         <member name="F:VelvetRelics.ViewModels.CatalogViewModel.searchCommand">
             <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CatalogViewModel.SearchCommand"/>.</summary>
@@ -301,11 +396,28 @@
         <member name="P:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)"/>.</summary>
         </member>
+        <member name="T:VelvetRelics.ViewModels.CategoryItemViewModel">
+            <summary>
+            Представляє одну категорію у горизонтальному списку фільтрів каталогу.
+            Реактивна властивість IsSelected дозволяє автоматично оновлювати підсвітку
+            активної категорії без перезавантаження всього списку.
+            </summary>
+            <inheritdoc/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CategoryItemViewModel.IsSelected">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CategoryItemViewModel.isSelected"/>
+        </member>
         <member name="T:VelvetRelics.ViewModels.FavoritesViewModel">
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="M:VelvetRelics.ViewModels.FavoritesViewModel.GoToCatalogAsync">
+            <summary>
+            Переходить на вкладку каталогу з порожнього стану обраного.
+            </summary>
         </member>
         <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.FavoriteProducts">
             <inheritdoc cref="F:VelvetRelics.ViewModels.FavoritesViewModel.favoriteProducts"/>
@@ -330,6 +442,12 @@
         </member>
         <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.GoToDetailsCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.FavoritesViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.FavoritesViewModel.goToCatalogCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.FavoritesViewModel.GoToCatalogCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.GoToCatalogCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.FavoritesViewModel.GoToCatalogAsync"/>.</summary>
         </member>
         <member name="T:VelvetRelics.ViewModels.LoginViewModel">
             <inheritdoc/>
@@ -386,7 +504,7 @@
         </member>
         <member name="M:VelvetRelics.ViewModels.ProductDetailsViewModel.AddToCartAsync">
             <summary>
-            Тимчасова команда для додавання в кошик (буде повністю розписана на Етапі 10)
+            Команда для додавання в кошик
             </summary>
         </member>
         <member name="P:VelvetRelics.ViewModels.ProductDetailsViewModel.Product">
@@ -451,6 +569,12 @@
             for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
             </summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Quantity">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Quantity" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TotalPrice">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TotalPrice" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsBusy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsBusy" generated properties.</summary>
         </member>
@@ -459,6 +583,15 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CartItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CartItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsNotEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsNotEmpty" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Products">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Products" generated properties.</summary>
@@ -475,11 +608,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsSearchVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsSearchVisible" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsSelected">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsSelected" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.FavoriteProducts">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "FavoriteProducts" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsEmpty">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
@@ -502,6 +635,12 @@
             for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
             </summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Quantity">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Quantity" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TotalPrice">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TotalPrice" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsBusy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsBusy" generated properties.</summary>
         </member>
@@ -510,6 +649,15 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CartItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CartItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsNotEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsNotEmpty" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Products">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Products" generated properties.</summary>
@@ -526,11 +674,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsSearchVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsSearchVisible" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsSelected">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsSelected" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.FavoriteProducts">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "FavoriteProducts" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsEmpty">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>

@@ -11,7 +11,7 @@
     <Grid RowDefinitions="*, Auto">
         
         <!-- Головний контент екрану -->
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" x:Name="DetailsScrollView" Opacity="0" TranslationY="40">
             <VerticalStackLayout Spacing="0">
                 
                 <!-- Блок зображення та кнопка Назад -->

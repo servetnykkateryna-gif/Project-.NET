@@ -16,6 +16,18 @@ public partial class CartPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.LoadCartAsync();
+
+        // Скидаємо стан перед анімацією
+        CartContentGrid.Opacity = 0;
+        CartContentGrid.TranslationY = 30;
+
+        // Запускаємо завантаження та анімацію паралельно
+        await Task.WhenAll(
+            _viewModel.LoadCartAsync(),
+            Task.WhenAll(
+                CartContentGrid.FadeTo(1, 350, Easing.CubicOut),
+                CartContentGrid.TranslateTo(0, 0, 350, Easing.CubicOut)
+            )
+        );
     }
 }
