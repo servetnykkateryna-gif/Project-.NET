@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:VelvetRelics.ViewModels"
+             xmlns:models="clr-namespace:VelvetRelics.Models"
+             x:Class="VelvetRelics.Views.CatalogPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource OffBlack}"
+             x:DataType="viewmodels:CatalogViewModel">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <!-- 1. Преміальний Заголовок -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,15,20,5" Spacing="2">
+            <Label Text="VELVET RELICS"
+                   FontFamily="OpenSansSemibold"
+                   FontSize="26"
+                   CharacterSpacing="3"
+                   TextColor="{StaticResource Primary}"
+                   HorizontalOptions="Center" />
+            <Label Text="Ексклюзивний антикваріат та предмети старовини"
+                   FontSize="12"
+                   TextColor="{StaticResource Tertiary}"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- 2. Горизонтальний вибір категорій -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Categories}"
+                        HeightRequest="50"
+                        Margin="0,10,0,10"
+                        HorizontalScrollBarVisibility="Never">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Grid Padding="5,0">
+                        <Border Stroke="{StaticResource Tertiary}"
+                                StrokeThickness="1"
+                                BackgroundColor="{StaticResource MidnightBlue}"
+                                StrokeShape="RoundRectangle 20"
+                                Padding="15,8"
+                                Margin="5,2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, Path=SelectCategoryCommand}"
+                                                       CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            
+                            <!-- Зміна стилю в залежності від обраної категорії здійснюється за допомогою тригерів -->
+                            <Label Text="{Binding .}"
+                                   TextColor="{StaticResource White}"
+                                   FontAttributes="Bold"
+                                   FontSize="13"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Source={RelativeSource AncestorType={x:Type Border}}, Path=IsFocused}"
+                                                 Value="True">
+                                        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- 3. Сітка Товарів (2 колонки) -->
+        <RefreshView Grid.Row="2"
+                     IsRefreshing="{Binding IsBusy}"
+                     Command="{Binding LoadProductsCommand}">
+            
+            <CollectionView ItemsSource="{Binding Products}"
+                            Margin="10,0"
+                            RemainingItemsThreshold="2">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                
+                <!-- Заглушка, якщо товарів немає -->
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="30" Spacing="10">
+                        <Label Text="Колекція порожня" FontSize="18" TextColor="{StaticResource Tertiary}" HorizontalOptions="Center"/>
+                        <Label Text="Спробуйте обрати іншу категорію" FontSize="14" TextColor="{StaticResource Gray200}" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Grid Padding="0" Margin="0,5">
+                            <Border Stroke="{StaticResource Tertiary}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 12"
+                                    BackgroundColor="{StaticResource MidnightBlue}"
+                                    HeightRequest="240">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, Path=GoToDetailsCommand}"
+                                                           CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                                <Grid RowDefinitions="*, Auto">
+                                    
+                                    <!-- Зображення товару -->
+                                    <Image Grid.Row="0"
+                                           Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="150"
+                                           WidthRequest="200" />
+                                    
+                                    <!-- Опис та ціна -->
+                                    <VerticalStackLayout Grid.Row="1" Padding="10,8" Spacing="4">
+                                        <Label Text="{Binding Name}"
+                                               TextColor="{StaticResource White}"
+                                               FontSize="13"
+                                               FontAttributes="Bold"
+                                               MaxLines="1"
+                                               LineBreakMode="TailTruncation" />
+                                        
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Year}"
+                                                   TextColor="{StaticResource Tertiary}"
+                                                   FontSize="11"
+                                                   VerticalOptions="Center" />
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding Price, StringFormat='${0:N0}'}"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontSize="13"
+                                                   FontAttributes="Bold"
+                                                   VerticalOptions="Center" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                    
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

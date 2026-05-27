@@ -36,10 +36,12 @@ public static class MauiProgram
 		// Transient — новий екземпляр кожного разу, коли потрібен
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<RegisterViewModel>();
+		builder.Services.AddTransient<CatalogViewModel>();
 
 		// ─── Views ──────────────────────────────────────────────────────────────
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<RegisterPage>();
+		builder.Services.AddTransient<CatalogPage>();
 
 		return builder.Build();
 	}

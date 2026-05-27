@@ -14,8 +14,8 @@
         Route="LoginPage" />
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        Title="Каталог"
+        ContentTemplate="{DataTemplate views:CatalogPage}"
         Route="MainPage" />
 
 </Shell>

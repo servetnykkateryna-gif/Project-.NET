@@ -174,6 +174,54 @@
         <member name="P:VelvetRelics.ViewModels.BaseViewModel.Title">
             <inheritdoc cref="F:VelvetRelics.ViewModels.BaseViewModel.title"/>
         </member>
+        <member name="T:VelvetRelics.ViewModels.CatalogViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="M:VelvetRelics.ViewModels.CatalogViewModel.LoadProductsAsync">
+            <summary>
+            Команда завантаження товарів
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryAsync(System.String)">
+            <summary>
+            Команда для вибору категорії та фільтрації товарів
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)">
+            <summary>
+            Команда переходу на сторінку деталей
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.Products">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CatalogViewModel.products"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.Categories">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CatalogViewModel.categories"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.SelectedCategory">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.CatalogViewModel.selectedCategory"/>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CatalogViewModel.loadProductsCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CatalogViewModel.LoadProductsCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.LoadProductsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.LoadProductsAsync"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CatalogViewModel.selectCategoryCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.SelectCategoryAsync(System.String)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.CatalogViewModel.goToDetailsCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)"/>.</summary>
+        </member>
         <member name="T:VelvetRelics.ViewModels.LoginViewModel">
             <inheritdoc/>
             <inheritdoc/>
@@ -244,6 +292,15 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Products">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Products" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Categories">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Categories" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedCategory">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedCategory" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
         </member>
@@ -267,6 +324,15 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Products">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Products" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Categories">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Categories" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedCategory">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedCategory" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
