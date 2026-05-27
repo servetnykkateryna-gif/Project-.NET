@@ -29,23 +29,19 @@ public class AuthenticationService : IAuthenticationService
             // var response = await _httpClient.PostAsJsonAsync("/api/auth/login", new { Email = email, Password = password });
             // if (response.IsSuccessStatusCode) ...
 
-            // Fake API Response для розробки
+            // Fake API Response для розробки — приймаємо будь-які дані
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 return new AuthResponse { IsSuccess = false, ErrorMessage = "Email та пароль обов'язкові." };
             }
 
-            if (email == "test@test.com" && password == "123456")
+            // ✅ Успішний вхід з будь-якими даними (до підключення реального API)
+            return new AuthResponse
             {
-                return new AuthResponse
-                {
-                    IsSuccess = true,
-                    Token = "fake-jwt-token-12345",
-                    User = new User { Id = 1, Name = "Admin", Email = email }
-                };
-            }
-
-            return new AuthResponse { IsSuccess = false, ErrorMessage = "Невірний email або пароль." };
+                IsSuccess = true,
+                Token = $"fake-jwt-token-{Guid.NewGuid():N}",
+                User = new User { Id = 1, Name = email.Split('@')[0], Email = email }
+            };
         }
         catch (Exception ex)
         {
