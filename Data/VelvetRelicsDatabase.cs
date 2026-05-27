@@ -20,8 +20,9 @@ public class VelvetRelicsDatabase
     // Список всіх таблиць, які потрібно створити
     private static readonly Type[] Tables =
     {
-        typeof(UserSession)
-        // У наступних етапах тут додамо FavoriteItem, CartItem
+        typeof(UserSession),
+        typeof(FavoriteItem)
+        // У наступних етапах тут додамо CartItem
     };
 
     /// <summary>
@@ -80,5 +81,55 @@ public class VelvetRelicsDatabase
     {
         var session = await GetCurrentSessionAsync();
         return session is not null && !string.IsNullOrEmpty(session.Token);
+    }
+
+    // ─── FavoriteItem Methods ────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Отримати всі ID улюблених товарів
+    /// </summary>
+    public async Task<List<int>> GetFavoriteProductIdsAsync()
+    {
+        var db = await GetDatabaseAsync();
+        var favorites = await db.Table<FavoriteItem>().ToListAsync();
+        return favorites.Select(f => f.ProductId).ToList();
+    }
+
+    /// <summary>
+    /// Додати товар до улюблених
+    /// </summary>
+    public async Task AddToFavoritesAsync(int productId)
+    {
+        var db = await GetDatabaseAsync();
+        
+        // Перевіряємо, чи вже є в базі, щоб уникнути дублювання
+        var existing = await db.Table<FavoriteItem>().Where(f => f.ProductId == productId).FirstOrDefaultAsync();
+        if (existing is null)
+        {
+            await db.InsertAsync(new FavoriteItem { ProductId = productId });
+        }
+    }
+
+    /// <summary>
+    /// Видалити товар з улюблених
+    /// </summary>
+    public async Task RemoveFromFavoritesAsync(int productId)
+    {
+        var db = await GetDatabaseAsync();
+        var existing = await db.Table<FavoriteItem>().Where(f => f.ProductId == productId).FirstOrDefaultAsync();
+        if (existing is not null)
+        {
+            await db.DeleteAsync(existing);
+        }
+    }
+
+    /// <summary>
+    /// Перевірити, чи товар в улюблених
+    /// </summary>
+    public async Task<bool> IsFavoriteAsync(int productId)
+    {
+        var db = await GetDatabaseAsync();
+        var existing = await db.Table<FavoriteItem>().Where(f => f.ProductId == productId).FirstOrDefaultAsync();
+        return existing is not null;
     }
 }

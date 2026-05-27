@@ -13,9 +13,13 @@
         ContentTemplate="{DataTemplate views:LoginPage}"
         Route="LoginPage" />
 
-    <ShellContent
-        Title="Каталог"
-        ContentTemplate="{DataTemplate views:CatalogPage}"
-        Route="MainPage" />
+    <TabBar Route="MainPage">
+        <Tab Title="Каталог" Icon="{FontImage FontFamily=OpenSansRegular, Glyph='🛒', Size=24, Color={StaticResource Primary}}">
+            <ShellContent ContentTemplate="{DataTemplate views:CatalogPage}" />
+        </Tab>
+        <Tab Title="Обране" Icon="{FontImage FontFamily=OpenSansRegular, Glyph='❤', Size=24, Color={StaticResource Primary}}">
+            <ShellContent ContentTemplate="{DataTemplate views:FavoritesPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

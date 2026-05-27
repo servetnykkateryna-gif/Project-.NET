@@ -59,6 +59,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = VelvetRelics.Views.Catalog
 build_metadata.AdditionalFiles.TargetPath = Views\CatalogPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\CatalogPage.xaml
 
+[C:/Users/User/Desktop/.NET/API/VelvetRelics/Views/FavoritesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = VelvetRelics.Views.FavoritesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\FavoritesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\FavoritesPage.xaml
+
 [C:/Users/User/Desktop/.NET/API/VelvetRelics/Views/LoginPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = VelvetRelics.Views.LoginPage.xaml

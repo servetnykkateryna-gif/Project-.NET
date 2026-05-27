@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VelvetRelics")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+fc031b06c02173e3a35cbcc8c447187005abb187")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+9fbb045ffbef69a44f5967e4e88f13d3e862aa89")]
 [assembly: System.Reflection.AssemblyProductAttribute("VelvetRelics")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VelvetRelics")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

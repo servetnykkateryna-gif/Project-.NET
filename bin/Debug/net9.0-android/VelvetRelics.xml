@@ -36,6 +36,32 @@
             Перевірити, чи є активна сесія (чи увійшов користувач).
             </summary>
         </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.GetFavoriteProductIdsAsync">
+            <summary>
+            Отримати всі ID улюблених товарів
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.AddToFavoritesAsync(System.Int32)">
+            <summary>
+            Додати товар до улюблених
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.RemoveFromFavoritesAsync(System.Int32)">
+            <summary>
+            Видалити товар з улюблених
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Data.VelvetRelicsDatabase.IsFavoriteAsync(System.Int32)">
+            <summary>
+            Перевірити, чи товар в улюблених
+            </summary>
+        </member>
+        <member name="T:VelvetRelics.Models.FavoriteItem">
+            <summary>
+            Сутність, що репрезентує товар, який користувач додав до улюблених.
+            Зберігається в локальній SQLite базі.
+            </summary>
+        </member>
         <member name="T:VelvetRelics.Models.Product">
             <summary>
             Модель антикварного товару.
@@ -275,6 +301,36 @@
         <member name="P:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.CatalogViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)"/>.</summary>
         </member>
+        <member name="T:VelvetRelics.ViewModels.FavoritesViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.FavoriteProducts">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.FavoritesViewModel.favoriteProducts"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.IsEmpty">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.FavoritesViewModel.isEmpty"/>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.FavoritesViewModel.loadFavoritesCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.FavoritesViewModel.LoadFavoritesCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.LoadFavoritesCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.FavoritesViewModel.LoadFavoritesAsync"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.FavoritesViewModel.removeFromFavoritesCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.FavoritesViewModel.RemoveFromFavoritesCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.RemoveFromFavoritesCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.FavoritesViewModel.RemoveFromFavoritesAsync(VelvetRelics.Models.Product)"/>.</summary>
+        </member>
+        <member name="F:VelvetRelics.ViewModels.FavoritesViewModel.goToDetailsCommand">
+            <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.FavoritesViewModel.GoToDetailsCommand"/>.</summary>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.FavoritesViewModel.GoToDetailsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:VelvetRelics.ViewModels.FavoritesViewModel.GoToDetailsAsync(VelvetRelics.Models.Product)"/>.</summary>
+        </member>
         <member name="T:VelvetRelics.ViewModels.LoginViewModel">
             <inheritdoc/>
             <inheritdoc/>
@@ -325,7 +381,7 @@
         </member>
         <member name="M:VelvetRelics.ViewModels.ProductDetailsViewModel.ToggleFavoriteAsync">
             <summary>
-            Тимчасова команда для додавання в обране (буде повністю розписана на Етапі 9)
+            Команда для додавання або видалення з обраного
             </summary>
         </member>
         <member name="M:VelvetRelics.ViewModels.ProductDetailsViewModel.AddToCartAsync">
@@ -335,6 +391,9 @@
         </member>
         <member name="P:VelvetRelics.ViewModels.ProductDetailsViewModel.Product">
             <inheritdoc cref="F:VelvetRelics.ViewModels.ProductDetailsViewModel.product"/>
+        </member>
+        <member name="P:VelvetRelics.ViewModels.ProductDetailsViewModel.IsFavorite">
+            <inheritdoc cref="F:VelvetRelics.ViewModels.ProductDetailsViewModel.isFavorite"/>
         </member>
         <member name="F:VelvetRelics.ViewModels.ProductDetailsViewModel.goBackCommand">
             <summary>The backing field for <see cref="P:VelvetRelics.ViewModels.ProductDetailsViewModel.GoBackCommand"/>.</summary>
@@ -416,6 +475,12 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsSearchVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsSearchVisible" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.FavoriteProducts">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "FavoriteProducts" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
         </member>
@@ -424,6 +489,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Product">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Product" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsFavorite">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsFavorite" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Name">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Name" generated properties.</summary>
@@ -458,6 +526,12 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsSearchVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsSearchVisible" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.FavoriteProducts">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "FavoriteProducts" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsEmpty">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsEmpty" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
         </member>
@@ -466,6 +540,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Product">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Product" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsFavorite">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsFavorite" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Name">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Name" generated properties.</summary>

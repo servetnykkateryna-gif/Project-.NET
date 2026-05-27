@@ -13,9 +13,13 @@ namespace VelvetRelics.ViewModels;
 public partial class ProductDetailsViewModel : BaseViewModel
 {
     private readonly IProductService _productService;
+    private readonly IFavoritesService _favoritesService;
 
     [ObservableProperty]
     private Product? product;
+
+    [ObservableProperty]
+    private bool isFavorite;
 
     private int _productId;
 
@@ -32,9 +36,10 @@ public partial class ProductDetailsViewModel : BaseViewModel
         }
     }
 
-    public ProductDetailsViewModel(IProductService productService)
+    public ProductDetailsViewModel(IProductService productService, IFavoritesService favoritesService)
     {
         _productService = productService;
+        _favoritesService = favoritesService;
         Title = "Деталі шедевра";
     }
 
@@ -54,6 +59,9 @@ public partial class ProductDetailsViewModel : BaseViewModel
             {
                 Product = loadedProduct;
                 Title = Product.Name;
+                
+                // Перевіряємо, чи товар вже є в улюблених
+                IsFavorite = await _favoritesService.IsFavoriteAsync(id);
             }
             else
             {
@@ -81,7 +89,7 @@ public partial class ProductDetailsViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Тимчасова команда для додавання в обране (буде повністю розписана на Етапі 9)
+    /// Команда для додавання або видалення з обраного
     /// </summary>
     [RelayCommand]
     private async Task ToggleFavoriteAsync()
@@ -89,8 +97,18 @@ public partial class ProductDetailsViewModel : BaseViewModel
         if (Product is null)
             return;
 
-        // Поки що просто показуємо повідомлення
-        await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» додано до вашої приватної галереї обраного.", "Чудово");
+        if (IsFavorite)
+        {
+            await _favoritesService.RemoveFromFavoritesAsync(Product.Id);
+            IsFavorite = false;
+            // await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» видалено з вашої приватної галереї.", "OK");
+        }
+        else
+        {
+            await _favoritesService.AddToFavoritesAsync(Product.Id);
+            IsFavorite = true;
+            // await Shell.Current.DisplayAlert("Обране", $"«{Product.Name}» додано до вашої приватної галереї обраного.", "Чудово");
+        }
     }
 
     /// <summary>
