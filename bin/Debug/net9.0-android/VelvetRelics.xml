@@ -36,6 +36,41 @@
             Перевірити, чи є активна сесія (чи увійшов користувач).
             </summary>
         </member>
+        <member name="T:VelvetRelics.Models.Product">
+            <summary>
+            Модель антикварного товару.
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.Name">
+            <summary>
+            Назва антикварного виробу
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.Description">
+            <summary>
+            Детальний художній опис предмету
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.Year">
+            <summary>
+            Рік або століття створення предмету (наприклад: 1892, XVII ст.)
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.Category">
+            <summary>
+            Категорія товару: картини, старовинні книги, монети, меблі, прикраси, годинники
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.Price">
+            <summary>
+            Вартість товару в USD або EUR (зберігаємо у десятковому форматі для точності фінансів)
+            </summary>
+        </member>
+        <member name="P:VelvetRelics.Models.Product.ImageUrl">
+            <summary>
+            URL посилання на преміальне зображення товару
+            </summary>
+        </member>
         <member name="T:VelvetRelics.Models.UserSession">
             <summary>
             Таблиця в SQLite для збереження сесії користувача.
@@ -65,6 +100,37 @@
         <member name="P:VelvetRelics.Models.UserSession.CreatedAt">
             <summary>
             Час, коли сесія була збережена
+            </summary>
+        </member>
+        <member name="T:VelvetRelics.Services.IProductService">
+            <summary>
+            Інтерфейс для роботи з каталогом антикваріату.
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Services.IProductService.GetProductsAsync">
+            <summary>
+            Отримати всі товари
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Services.IProductService.GetProductsByCategoryAsync(System.String)">
+            <summary>
+            Отримати товари з певної категорії
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Services.IProductService.GetProductByIdAsync(System.Int32)">
+            <summary>
+            Отримати деталі одного конкретного товару за його ID
+            </summary>
+        </member>
+        <member name="M:VelvetRelics.Services.IProductService.SearchProductsAsync(System.String)">
+            <summary>
+            Здійснити пошук товарів за текстом (по назві або опису)
+            </summary>
+        </member>
+        <member name="T:VelvetRelics.Services.ProductService">
+            <summary>
+            Реалізація сервісу товарів з інтегрованими преміальними Mock-даними для візуальної досконалості додатка.
+            Також підготовлено основу під роботу з HttpClient для майбутньої REST API інтеграції.
             </summary>
         </member>
         <member name="T:VelvetRelics.Services.SessionService">

@@ -1,0 +1,14 @@
+## .NET MAUI
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.bak
+*.orig
+*.vs/
+.vs/
+
+## IDE
+.idea/
+*.sln.DotSettings.user

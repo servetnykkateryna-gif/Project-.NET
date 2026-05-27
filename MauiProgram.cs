@@ -30,6 +30,7 @@ public static class MauiProgram
 		// ─── Services ───────────────────────────────────────────────────────────
 		builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 		builder.Services.AddSingleton<SessionService>();
+		builder.Services.AddSingleton<IProductService, ProductService>();
 
 		// ─── ViewModels ─────────────────────────────────────────────────────────
 		// Transient — новий екземпляр кожного разу, коли потрібен
