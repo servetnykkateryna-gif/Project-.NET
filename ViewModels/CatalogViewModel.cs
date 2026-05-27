@@ -10,6 +10,9 @@ public partial class CatalogViewModel : BaseViewModel
 {
     private readonly IProductService _productService;
 
+    // Локальний кеш ВСІХ товарів для швидкої фільтрації без зайвих запитів до API
+    private List<Product> _allProducts = new();
+
     [ObservableProperty]
     private ObservableCollection<Product> products = new();
 
@@ -19,12 +22,17 @@ public partial class CatalogViewModel : BaseViewModel
     [ObservableProperty]
     private string selectedCategory = "Всі";
 
+    [ObservableProperty]
+    private string searchText = string.Empty;
+
+    [ObservableProperty]
+    private bool isSearchVisible = false;
+
     public CatalogViewModel(IProductService productService)
     {
         _productService = productService;
         Title = "Velvet Relics";
 
-        // Ініціалізуємо список категорій для фільтрації
         Categories = new ObservableCollection<string>
         {
             "Всі",
@@ -38,7 +46,7 @@ public partial class CatalogViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Команда завантаження товарів
+    /// Завантажуємо товари з API та зберігаємо у локальний кеш
     /// </summary>
     [RelayCommand]
     public async Task LoadProductsAsync()
@@ -49,25 +57,13 @@ public partial class CatalogViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            Products.Clear();
 
-            IEnumerable<Product> loadedProducts;
+            // Завантажуємо ВСІ товари один раз та кешуємо
+            var loaded = await _productService.GetProductsAsync();
+            _allProducts = loaded.ToList();
 
-            if (SelectedCategory == "Всі")
-            {
-                loadedProducts = await _productService.GetProductsAsync();
-            }
-            else
-            {
-                // Наш сервіс приймає категорії в нижньому регістрі
-                string categoryKey = SelectedCategory.ToLower();
-                loadedProducts = await _productService.GetProductsByCategoryAsync(categoryKey);
-            }
-
-            foreach (var product in loadedProducts)
-            {
-                Products.Add(product);
-            }
+            // Застосовуємо поточні фільтри до кешу
+            ApplyFilters();
         }
         catch (Exception ex)
         {
@@ -80,20 +76,53 @@ public partial class CatalogViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Команда для вибору категорії та фільтрації товарів
+    /// Вибір категорії — фільтруємо локально без API
     /// </summary>
     [RelayCommand]
-    private async Task SelectCategoryAsync(string category)
+    private void SelectCategory(string category)
     {
         if (SelectedCategory == category)
             return;
 
         SelectedCategory = category;
-        await LoadProductsAsync();
+        ApplyFilters();
     }
 
     /// <summary>
-    /// Команда переходу на сторінку деталей
+    /// Текстовий пошук — викликається при зміні SearchText
+    /// </summary>
+    [RelayCommand]
+    private void Search()
+    {
+        ApplyFilters();
+    }
+
+    /// <summary>
+    /// Показати/сховати пошукову панель
+    /// </summary>
+    [RelayCommand]
+    private void ToggleSearch()
+    {
+        IsSearchVisible = !IsSearchVisible;
+        if (!IsSearchVisible)
+        {
+            SearchText = string.Empty;
+            ApplyFilters();
+        }
+    }
+
+    /// <summary>
+    /// Очистити пошуковий запит
+    /// </summary>
+    [RelayCommand]
+    private void ClearSearch()
+    {
+        SearchText = string.Empty;
+        ApplyFilters();
+    }
+
+    /// <summary>
+    /// Навігація на детальний екран товару
     /// </summary>
     [RelayCommand]
     private async Task GoToDetailsAsync(Product product)
@@ -101,7 +130,42 @@ public partial class CatalogViewModel : BaseViewModel
         if (product is null)
             return;
 
-        // Передаємо ID товару через параметри маршруту для Етапу 7
         await Shell.Current.GoToAsync($"ProductDetailsPage?ProductId={product.Id}");
     }
+
+    /// <summary>
+    /// Основна логіка фільтрації — поєднує категорію та пошуковий рядок.
+    /// Виконується миттєво за кешованими даними без звернення до API.
+    /// </summary>
+    private void ApplyFilters()
+    {
+        IEnumerable<Product> filtered = _allProducts;
+
+        // 1. Фільтрація за категорією
+        if (SelectedCategory != "Всі")
+        {
+            string categoryKey = SelectedCategory.ToLower();
+            filtered = filtered.Where(p => p.Category.Equals(categoryKey, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // 2. Фільтрація за пошуковим текстом
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            string query = SearchText.ToLower().Trim();
+            filtered = filtered.Where(p =>
+                p.Name.ToLower().Contains(query) ||
+                p.Description.ToLower().Contains(query) ||
+                p.Year.ToLower().Contains(query));
+        }
+
+        // 3. Оновлюємо колекцію (зберігаємо плавність UI)
+        Products.Clear();
+        foreach (var product in filtered)
+            Products.Add(product);
+    }
+
+    /// <summary>
+    /// Автоматична реакція на зміну SearchText через OnPropertyChanged
+    /// </summary>
+    partial void OnSearchTextChanged(string value) => ApplyFilters();
 }
