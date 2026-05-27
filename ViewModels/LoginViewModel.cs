@@ -7,6 +7,7 @@ namespace VelvetRelics.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     private readonly IAuthenticationService _authService;
+    private readonly SessionService _sessionService;
 
     [ObservableProperty]
     private string email = string.Empty;
@@ -14,9 +15,11 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string password = string.Empty;
 
-    public LoginViewModel(IAuthenticationService authService)
+    // Отримуємо обидва сервіси через Dependency Injection
+    public LoginViewModel(IAuthenticationService authService, SessionService sessionService)
     {
         _authService = authService;
+        _sessionService = sessionService;
         Title = "Вхід";
     }
 
@@ -35,12 +38,15 @@ public partial class LoginViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            
+
             var response = await _authService.LoginAsync(Email, Password);
 
             if (response.IsSuccess)
             {
-                // Успішний вхід. Переходимо на головну сторінку.
+                // ✅ Зберігаємо сесію в SQLite для автоматичного входу наступного разу
+                await _sessionService.SaveSessionAsync(response);
+
+                // Переходимо на головну сторінку
                 await Shell.Current.GoToAsync("//MainPage");
             }
             else

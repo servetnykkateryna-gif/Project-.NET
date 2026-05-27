@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using VelvetRelics.Data;
 using VelvetRelics.Services;
 using VelvetRelics.ViewModels;
 using VelvetRelics.Views;
@@ -22,14 +23,20 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		// Services
-		builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+		// ─── Database ───────────────────────────────────────────────────────────
+		// Singleton — один екземпляр на весь час роботи застосунку
+		builder.Services.AddSingleton<VelvetRelicsDatabase>();
 
-		// ViewModels
+		// ─── Services ───────────────────────────────────────────────────────────
+		builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+		builder.Services.AddSingleton<SessionService>();
+
+		// ─── ViewModels ─────────────────────────────────────────────────────────
+		// Transient — новий екземпляр кожного разу, коли потрібен
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<RegisterViewModel>();
 
-		// Views
+		// ─── Views ──────────────────────────────────────────────────────────────
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<RegisterPage>();
 
