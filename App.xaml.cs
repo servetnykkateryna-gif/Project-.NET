@@ -17,19 +17,4 @@ public partial class App : Application
     {
         return new Window(new AppShell());
     }
-
-    protected override async void OnStart()
-    {
-        base.OnStart();
-
-        // Перевіряємо, чи є збережена сесія в SQLite
-        bool isLoggedIn = await _sessionService.IsLoggedInAsync();
-
-        if (isLoggedIn)
-        {
-            // Якщо сесія є — переходимо одразу на головну сторінку, минаючи логін
-            await Shell.Current.GoToAsync("//MainPage");
-        }
-        // Якщо сесії немає — AppShell за замовчуванням показує LoginPage
-    }
-}
+}
